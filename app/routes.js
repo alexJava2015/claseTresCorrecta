@@ -1,4 +1,5 @@
 var Todo = require('./models/todo');
+var Users = require('./models/users');
 
 function getTodos(res){
 	Todo.find(function(err, todos) {
@@ -13,12 +14,22 @@ function getTodos(res){
 
 module.exports = function(app) {
 
+	app.use(function(req, res, next) {
+	  res.header("Access-Control-Allow-Origin", "*");
+	  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+	  next();
+	});
+
 	// api ---------------------------------------------------------------------
 	// get all todos
 	app.get('/api/todos', function(req, res) {
-
 		// use mongoose to get all todos in the database
 		getTodos(res);
+	});
+
+	app.get('/api/users', function(req, res) {
+		// use mongoose to get all todos in the database
+		res.json(Users());
 	});
 
 	// create todo and send back all todos after creation
